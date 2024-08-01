@@ -1,0 +1,20 @@
+## Inheriting configs from ACK
+_KERNEL_DIR=${KERNEL_DIR}
+. ${KERNEL_DIR}/build.config.common
+KERNEL_DIR=${_KERNEL_DIR}
+. ${KERNEL_DIR}/build.config.aarch64
+
+DT_OVERLAY_SUPPORT=1
+
+BOOT_IMAGE_HEADER_VERSION=3
+BASE_ADDRESS=0x80000000
+PAGE_SIZE=4096
+
+DTB_DIR=vendor/qcom
+
+function clean_dtbs() {
+	rm -rf ${OUT_DIR}/arch/${ARCH}/boot/dts
+}
+append_cmd POST_DEFCONFIG_CMDS 'clean_dtbs'
+
+DEFCONFIG="vendor/lahaina-qgki_defconfig vendor/debugfs.config"
